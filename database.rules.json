@@ -1,0 +1,75 @@
+{
+  "rules": {
+    "users": {
+      "$uid": {
+        ".read": "$uid === auth.uid",
+        ".write": "$uid === auth.uid",
+        "entries": {
+          "$entryId": {
+            ".validate": "newData.hasChildren(['title', 'content', 'mood', 'date', 'time', 'createdAt', 'userId']) && newData.child('userId').val() === auth.uid",
+            "title": {
+              ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 200"
+            },
+            "content": {
+              ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 5000"
+            },
+            "mood": {
+              ".validate": "newData.isString() && (newData.val() === 'happy' || newData.val() === 'sad' || newData.val() === 'angry' || newData.val() === 'excited' || newData.val() === 'calm' || newData.val() === 'anxious')"
+            },
+            "date": {
+              ".validate": "newData.isString() && newData.val().matches(/^\\d{4}-\\d{2}-\\d{2}$/)"
+            },
+            "time": {
+              ".validate": "newData.isString() && newData.val().matches(/^\\d{2}:\\d{2}$/)"
+            },
+            "createdAt": {
+              ".validate": "newData.isString()"
+            },
+            "userId": {
+              ".validate": "newData.isString() && newData.val() === auth.uid"
+            },
+            "$other": {
+              ".validate": false
+            }
+          }
+        },
+        "settings": {
+          ".validate": "newData.hasChildren(['theme', 'notifications', 'privacy'])",
+          "theme": {
+            ".validate": "newData.isString() && (newData.val() === 'light' || newData.val() === 'dark' || newData.val() === 'system')"
+          },
+          "notifications": {
+            ".validate": "newData.isBoolean()"
+          },
+          "privacy": {
+            ".validate": "newData.isString() && (newData.val() === 'private' || newData.val() === 'public')"
+          },
+          "$other": {
+            ".validate": false
+          }
+        },
+        "profile": {
+          "displayName": {
+            ".validate": "newData.isString() && newData.val().length <= 100"
+          },
+          "photoURL": {
+            ".validate": "newData.isString()"
+          },
+          "updatedAt": {
+            ".validate": "newData.isString()"
+          },
+          "$other": {
+            ".validate": false
+          }
+        },
+        "$other": {
+          ".validate": false
+        }
+      }
+    },
+    "$other": {
+      ".read": false,
+      ".write": false
+    }
+  }
+}
